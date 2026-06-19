@@ -1,0 +1,163 @@
+{
+  "$comment": "Ruleset meta — read WITHOUT executing code (UI listing, engineApi check, quarantine). Keep in sync with src/index.ts.",
+  "id": "com.illusions-lab.nihongo-style-guide",
+  "name": "Nihongo Style Guide 3 (JTCA)",
+  "nameJa": "日本語スタイルガイド 第3版",
+  "version": "0.1.0",
+  "engineApi": 1,
+  "license": "MIT",
+  "maintainerEmail": "rulesets@illusions.app",
+  "rulesetPrefix": "nsg-",
+  "guidelines": [
+    {
+      "id": "jtca-style-guide-3",
+      "nameJa": "日本語スタイルガイド",
+      "publisherJa": "テクニカルコミュニケーター協会",
+      "year": 2022,
+      "license": "Proprietary",
+      "descriptionJa": "実用文の表記・記号・句読点を統一するための日本語ライティング技術の指針（第3版）。"
+    }
+  ],
+  "rules": [
+    {
+      "ruleId": "nsg-katakana-long-vowel",
+      "nameJa": "カタカナ長音符号の省略",
+      "descriptionJa": "一般的な外来語の語末長音符号（ー）が省略されていないか検出します（例: コンピュータ → コンピューター）。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["official", "academic", "blog"],
+      "docs": {
+        "positiveExample": "新しいコンピューターを買う。",
+        "negativeExample": "新しいコンピュータを買う。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.2節"
+      }
+    },
+    {
+      "ruleId": "nsg-katakana-kanyo",
+      "nameJa": "カタカナ表記の慣用形（ヴ音）",
+      "descriptionJa": "ヴァ・ヴィ・ヴ・ヴェ・ヴォの表記を慣用形（バ・ビ・ブ・ベ・ボ）に統一する提案を行います。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["official", "academic", "blog"],
+      "docs": {
+        "positiveExample": "バイオリンを弾く。",
+        "negativeExample": "ヴァイオリンを弾く。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.2節"
+      }
+    },
+    {
+      "ruleId": "nsg-period-style",
+      "nameJa": "句点の統一（ピリオド）",
+      "descriptionJa": "実用文の句点は丸（。）に統一します。全角ピリオド（．）を句点として使っていないか検出します。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "docs": {
+        "positiveExample": "これは新製品です。",
+        "negativeExample": "これは新製品です．",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第2章 2.8.1節"
+      }
+    },
+    {
+      "ruleId": "nsg-comma-style",
+      "nameJa": "読点の統一（コンマ）",
+      "descriptionJa": "実用文の読点は点（、）に統一します。全角コンマ（，）を読点として使っていないか検出します。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "docs": {
+        "positiveExample": "保存し、終了する。",
+        "negativeExample": "保存し，終了する。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第2章 2.8.1節"
+      }
+    },
+    {
+      "ruleId": "nsg-unit-time",
+      "nameJa": "速度の単位表記",
+      "descriptionJa": "速度の単位はSIに基づく英字記号に統一します（例: km/時 → km/h）。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["official", "academic", "blog"],
+      "docs": {
+        "positiveExample": "最高120km/hで走る。",
+        "negativeExample": "最高120km/時で走る。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.3節"
+      }
+    },
+    {
+      "ruleId": "nsg-unit-case",
+      "nameJa": "単位記号の大文字小文字",
+      "descriptionJa": "SI単位記号の大文字小文字の表記を点検します（例: Kg → kg、hz → Hz）。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["official", "academic", "blog"],
+      "docs": {
+        "positiveExample": "重さは5kgです。",
+        "negativeExample": "重さは5Kgです。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.3節"
+      }
+    },
+    {
+      "ruleId": "nsg-fullwidth-alnum",
+      "nameJa": "英数字の半角統一",
+      "descriptionJa": "和文中の英字・数字は半角に統一します。全角の英字・数字を検出します。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["official", "academic", "blog"],
+      "docs": {
+        "positiveExample": "バージョン3を使う。",
+        "negativeExample": "バージョン３を使う。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.3節"
+      }
+    },
+    {
+      "ruleId": "nsg-wave-dash",
+      "nameJa": "範囲を示す波記号",
+      "descriptionJa": "範囲を示す記号は波記号（〜）に統一します。半角チルダ（~）を検出します。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["official", "academic", "blog"],
+      "docs": {
+        "positiveExample": "10〜20ページを読む。",
+        "negativeExample": "10~20ページを読む。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.3節"
+      }
+    },
+    {
+      "ruleId": "nsg-ellipsis-style",
+      "nameJa": "省略を示すリーダー",
+      "descriptionJa": "省略を示すリーダーは三点リーダー（…）を用います。半角ピリオドの連続を検出します。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "docs": {
+        "positiveExample": "続きは…次回へ。",
+        "negativeExample": "続きは...次回へ。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.3節"
+      }
+    },
+    {
+      "ruleId": "nsg-repetition-mark",
+      "nameJa": "繰り返し符号（々）の誤用",
+      "descriptionJa": "複合語にまたがる同字反復には繰り返し符号（々）を使いません（例: 研究会々長 → 研究会会長）。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["official", "academic", "blog"],
+      "docs": {
+        "positiveExample": "研究会会長に就任する。",
+        "negativeExample": "研究会々長に就任する。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.3.3節"
+      }
+    }
+  ]
+}
