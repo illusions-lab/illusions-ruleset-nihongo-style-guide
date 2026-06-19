@@ -10,7 +10,6 @@ describe("nsg-repetition-mark — detections (複合語境界の「々」誤用)
   const cases: Array<[string, string]> = [
     ["研究会々長に就任する。", "研究会会長"],
     ["この物理々論を学ぶ。", "物理理論"],
-    ["委員々長を選ぶ。", "委員会長"],
     ["民主々義を守る。", "民主主義"],
   ];
 
@@ -42,5 +41,10 @@ describe("nsg-repetition-mark — false positives (正しい畳語は対象外)"
 describe("nsg-repetition-mark — behavior", () => {
   it("does nothing when disabled", () => {
     expect(rule().lint("研究会々長。", { ...CONFIG, enabled: false })).toHaveLength(0);
+  });
+
+  it("does not flag 委員々長 (旧ペア削除済み: 論理的に成立しないため)", () => {
+    // 「委員々長→委員会長」は「委員+々長」の分割になり、元語に「会」が存在しないため除外
+    expect(rule().lint("委員々長を選ぶ。", CONFIG)).toHaveLength(0);
   });
 });

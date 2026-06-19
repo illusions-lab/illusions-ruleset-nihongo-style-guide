@@ -19,6 +19,7 @@ import { createNsgFullwidthAlnum } from "./rules/nsg-fullwidth-alnum";
 import { createNsgWaveDash } from "./rules/nsg-wave-dash";
 import { createNsgEllipsisStyle } from "./rules/nsg-ellipsis-style";
 import { createNsgRepetitionMark } from "./rules/nsg-repetition-mark";
+import { createNsgKotoFormalNoun } from "./rules/nsg-koto-formalnoun";
 
 const manifest = manifestJson as RulesetModule["manifest"];
 
@@ -36,6 +37,7 @@ const ruleset: RulesetModule = {
       createNsgWaveDash(ctx, manifest),
       createNsgEllipsisStyle(ctx, manifest),
       createNsgRepetitionMark(ctx, manifest),
+      createNsgKotoFormalNoun(ctx, manifest),
     ];
   },
 };

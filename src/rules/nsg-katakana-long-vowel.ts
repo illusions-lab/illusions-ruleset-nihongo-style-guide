@@ -62,7 +62,7 @@ export function createNsgKatakanaLongVowel(
             ruleId: this.id,
             severity: config.severity,
             message: `Add the long-vowel mark: "${correct}"`,
-            messageJa: `日本語スタイルガイド 第3版に基づき、一般用語の語末長音符号は省略せず「${correct}」と表記します。`,
+            messageJa: `TC協会ガイドラインでは語末長音符号を付けることを原則としています（技術用語では省略する方針もあります）。ここでは一般用語として「${correct}」を提案します。`,
             replacement: () => correct,
             reference: REFERENCE,
             fixLabelJa: `「${correct}」に修正`,

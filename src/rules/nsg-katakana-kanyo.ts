@@ -8,7 +8,8 @@
  *
  * 偽陽性回避:
  *   - 置換は「ヴ＋小書き仮名」または単独の「ヴ」に限定し、対応表で機械的に変換。
- *   - 固有名詞でヴ表記を意図する場合があるため severity=warning（提案）に留める。
+ *   - 固有名詞（ヴィヴァルディ・ヴェルサイユ等）はこのガイドラインの対象外であり、
+ *     severity=warning（提案）に留め、ユーザーが個別に判断する。
  */
 import type {
   LintIssue,
@@ -57,8 +58,8 @@ export function createNsgKatakanaKanyo(ctx: RulesetContext, manifest: RulesetMan
         pattern: PATTERN,
         ruleId: this.id,
         severity: config.severity,
-        message: "Use the conventional katakana form for the V sound",
-        messageJa: "日本語スタイルガイド 第3版に基づき、原語が「V」音のカタカナ表記は慣用形（バ・ビ・ブ・ベ・ボ）に統一します。",
+        message: "Use the conventional katakana form for the V sound (not applicable to proper nouns)",
+        messageJa: "日本語スタイルガイド 第3版に基づき、原語が「V」音のカタカナ表記は慣用形（バ・ビ・ブ・ベ・ボ）に統一します。ただし固有名詞は対象外です。",
         replacement: (m) => toKanyo(m[0]),
         reference: REFERENCE,
         fixLabelJa: "慣用形に修正",

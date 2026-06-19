@@ -21,10 +21,16 @@ import type {
   RulesetManifest,
 } from "illusions-lint-sdk";
 
-/** 誤った大小（数値直後）→ 正しいSI記号。直後に英字が続く語は除外（lookahead）。 */
+/**
+ * 誤った大小（数値直後）→ 正しいSI記号。直後に英字が続く語は除外（lookahead）。
+ *
+ * 注意: `Mg` (Megagram, SI接頭辞 Mega + gram) は正当なSI単位記号のため除外。
+ *   - SI: kg（キログラム）、Mg（メガグラム）はそれぞれ独立した記号。
+ *   - `5Mg` を `5mg` に変換すると、100万倍の単位誤差が生じる危険がある。
+ */
 const PAIRS: ReadonlyArray<{ pattern: RegExp; correct: string }> = [
   { pattern: /(?<=\d)Kg(?![A-Za-z])/, correct: "kg" },
-  { pattern: /(?<=\d)Mg(?![A-Za-z])/, correct: "mg" },
+  // Mg は除外: SI単位のメガグラム（Megagram = 1,000kg）と区別できないため
   { pattern: /(?<=\d)CM(?![A-Za-z])/, correct: "cm" },
   { pattern: /(?<=\d)MM(?![A-Za-z])/, correct: "mm" },
   { pattern: /(?<=\d)KM(?![A-Za-z])/, correct: "km" },

@@ -8,7 +8,6 @@ const rule = () => ruleset.createRules(createTestContext()).find((r) => r.id ===
 describe("nsg-unit-case — detections (単位記号の大小誤り)", () => {
   const cases: Array<[string, string]> = [
     ["重さは5Kgです。", "kg"],
-    ["投与量は5Mgです。", "mg"],
     ["長さは10CMです。", "cm"],
     ["幅は3MMです。", "mm"],
     ["距離は5KMです。", "km"],
@@ -29,13 +28,15 @@ describe("nsg-unit-case — detections (単位記号の大小誤り)", () => {
   }
 });
 
-describe("nsg-unit-case — false positives (正しい記号・英単語は対象外)", () => {
+describe("nsg-unit-case — false positives (正しい記号・英単語・Mgは対象外)", () => {
   const clean = [
     "重さは5kgです。",
     "周波数は50Hzです。",
     "気圧は1013Paです。",
     "Page 5km is fine.", // 数字に続かないので対象外（5km は正しい小文字）
     "型番はAB12KGXです。", // 直後に英字が続く語は対象外
+    // Mg はSI単位のメガグラム（Megagram）として正当なため対象外
+    "質量は5Mgです。",
   ];
   for (const text of clean) {
     it(`leaves "${text}" untouched`, () => {
