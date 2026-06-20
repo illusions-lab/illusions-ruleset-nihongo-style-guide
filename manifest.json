@@ -3,9 +3,11 @@
   "id": "com.illusions-lab.nihongo-style-guide",
   "name": "Nihongo Style Guide 3 (JTCA)",
   "nameJa": "日本語スタイルガイド 第3版",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engineApi": 1,
   "license": "MIT",
+  "licenseUrl": "https://opensource.org/license/mit",
+  "purchaseUrl": "https://www.amazon.co.jp/s?k=%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB%E3%82%AC%E3%82%A4%E3%83%89%20%E7%AC%AC3%E7%89%88%20%E3%83%86%E3%82%AF%E3%83%8B%E3%82%AB%E3%83%AB%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%82%B1%E3%83%BC%E3%82%BF%E3%83%BC%E5%8D%94%E4%BC%9A",
   "maintainerEmail": "rulesets@illusions.app",
   "rulesetPrefix": "nsg-",
   "guidelines": [
