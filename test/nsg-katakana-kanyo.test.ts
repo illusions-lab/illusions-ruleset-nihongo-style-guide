@@ -52,3 +52,37 @@ describe("nsg-katakana-kanyo — behavior", () => {
     expect(issues[0].from).toBeLessThan(issues[1].from);
   });
 });
+
+describe("nsg-katakana-kanyo — edge cases", () => {
+  it("converts standalone ヴ (without kana suffix) to ブ", () => {
+    const issues = rule().lint("ドライヴを楽しむ。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("ブ");
+  });
+
+  it("converts ヴュ to ビュ", () => {
+    // インタヴュー → インタビュー （ヴュ → ビュ）
+    const issues = rule().lint("インタヴューを受ける。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("ビュ");
+  });
+
+  it("does not flag text that already uses conventional forms", () => {
+    // バ行が既に使われていれば何も検出しない
+    expect(rule().lint("バイオリンとビオラを弾く。", CONFIG)).toHaveLength(0);
+  });
+
+  it("handles ヴォ → ボ conversion at start of word", () => {
+    const issues = rule().lint("ヴォリュームを下げる。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("ボ");
+  });
+
+  it("span covers only the ヴ-sequence, not surrounding characters", () => {
+    const text = "インタヴュー"; // ヴュ is at index 3-4 (0-based)
+    const issues = rule().lint(text, CONFIG);
+    expect(issues).toHaveLength(1);
+    // span should be exactly 2 chars (ヴュ)
+    expect(issues[0].to - issues[0].from).toBe(2);
+  });
+});

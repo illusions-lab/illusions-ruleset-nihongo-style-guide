@@ -151,3 +151,73 @@ describe("nsg-koto-formalnoun — behavior", () => {
     expect(rule.level).toBe("L2");
   });
 });
+
+describe("nsg-koto-formalnoun — edge cases (token-boundary and FP guards)", () => {
+  it("does not flag 固有名詞 token with surface '事' (pos_detail_1: 固有名詞 is not 非自立)", () => {
+    const text = "事件の事。";
+    const tokens: Token[] = [
+      {
+        surface: "事",
+        pos: "名詞",
+        pos_detail_1: "一般", // 普通名詞として
+        pos_detail_2: "",
+        pos_detail_3: "",
+        basic_form: "事",
+        reading: "コト",
+        start: 0,
+        end: 1,
+      },
+      { surface: "件", pos: "名詞", pos_detail_1: "一般", start: 1, end: 2 },
+      { surface: "の", pos: "助詞", pos_detail_1: "連体化", start: 2, end: 3 },
+      makeFormalNounKoto(3), // ← この「事」だけが形式名詞
+      { surface: "。", pos: "記号", pos_detail_1: "句点", start: 4, end: 5 },
+    ];
+
+    const rule = getRule();
+    const issues = lintWithMockTokens(rule, text, tokens, CONFIG);
+    // 形式名詞の「事」(index 3) だけ検出、普通名詞の「事」(index 0) は対象外
+    expect(issues).toHaveLength(1);
+    expect(issues[0].from).toBe(3);
+  });
+
+  it("does not flag サ変接続 名詞 with surface '事' (e.g. 事務 → サ変接続は対象外)", () => {
+    const text = "事務する。";
+    const tokens: Token[] = [
+      {
+        surface: "事",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        pos_detail_2: "",
+        pos_detail_3: "",
+        basic_form: "事",
+        reading: "ジ",
+        start: 0,
+        end: 1,
+      },
+    ];
+    const rule = getRule();
+    const issues = lintWithMockTokens(rule, text, tokens, CONFIG);
+    expect(issues).toHaveLength(0);
+  });
+
+  it("fix replacement is exactly 'こと' (not 'こと。')", () => {
+    const text = "確認する事。";
+    const tokens: Token[] = [
+      { surface: "確認", pos: "名詞", pos_detail_1: "サ変接続", start: 0, end: 2 },
+      { surface: "する", pos: "動詞", pos_detail_1: "自立", start: 2, end: 4 },
+      makeFormalNounKoto(4),
+      { surface: "。", pos: "記号", pos_detail_1: "句点", start: 5, end: 6 },
+    ];
+    const rule = getRule();
+    const issues = lintWithMockTokens(rule, text, tokens, CONFIG);
+    expect(issues[0].fix?.replacement).toBe("こと");
+    expect(issues[0].from).toBe(4);
+    expect(issues[0].to).toBe(5);
+  });
+
+  it("lint() returns empty array (L2 rule — does not use plain text path)", () => {
+    const rule = getRule();
+    // L2ルールはlintWithTokensのみ対応し、lint()は常に空を返す
+    expect(rule.lint("変更する事もある。", CONFIG)).toHaveLength(0);
+  });
+});

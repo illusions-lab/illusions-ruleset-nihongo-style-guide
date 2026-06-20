@@ -48,3 +48,32 @@ describe("nsg-repetition-mark — behavior", () => {
     expect(rule().lint("委員々長を選ぶ。", CONFIG)).toHaveLength(0);
   });
 });
+
+describe("nsg-repetition-mark — edge cases", () => {
+  it("does not flag correct 畳語 '国々' (single-word reduplication)", () => {
+    expect(rule().lint("世界の国々。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag '人々' (correct reduplication)", () => {
+    expect(rule().lint("多くの人々が来た。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag '日々' (correct reduplication)", () => {
+    expect(rule().lint("日々の練習が大切だ。", CONFIG)).toHaveLength(0);
+  });
+
+  it("flags 民主々義 and replaces with 民主主義", () => {
+    const issues = rule().lint("民主々義の原則。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("民主主義");
+  });
+
+  it("flags multiple compound-boundary 々 errors in one text", () => {
+    const issues = rule().lint("研究会々長と民主々義について議論した。", CONFIG);
+    expect(issues).toHaveLength(2);
+  });
+
+  it("does not flag 物理理論 (already correct — no 々 present)", () => {
+    expect(rule().lint("物理理論を学ぶ。", CONFIG)).toHaveLength(0);
+  });
+});

@@ -51,3 +51,31 @@ describe("nsg-katakana-long-vowel — behavior", () => {
     expect(rule().lint("コンピュータを買う。", { ...CONFIG, enabled: false })).toHaveLength(0);
   });
 });
+
+describe("nsg-katakana-long-vowel — edge cases", () => {
+  it("does not flag 'コンピューター' (already correct, long vowel present)", () => {
+    expect(rule().lint("コンピューターを使う。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag 'ユーザーグループ' (compound with correct long vowel)", () => {
+    // 複合語でも長音付きが正しい表記のままであれば反応しない
+    expect(rule().lint("ユーザーグループに参加する。", CONFIG)).toHaveLength(0);
+  });
+
+  it("flags the first occurrence in a multi-match sentence", () => {
+    // ユーザ と プリンタ が両方ある場合、両方を検出する
+    const issues = rule().lint("ユーザとプリンタの設定。", CONFIG);
+    expect(issues).toHaveLength(2);
+  });
+
+  it("does not flag katakana ending with long vowel at word boundary edge: サーバー (already correct)", () => {
+    expect(rule().lint("サーバーを再起動する。", CONFIG)).toHaveLength(0);
+  });
+
+  it("flags 'ユーザ' embedded in a longer string", () => {
+    // ユーザ が後続の文字列に続く場合も検出する
+    const issues = rule().lint("ユーザ管理画面を開く。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("ユーザー");
+  });
+});

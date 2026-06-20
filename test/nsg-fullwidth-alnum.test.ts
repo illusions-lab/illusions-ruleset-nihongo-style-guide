@@ -49,3 +49,34 @@ describe("nsg-fullwidth-alnum — behavior", () => {
     expect(rule().lint("バージョン３。", { ...CONFIG, enabled: false })).toHaveLength(0);
   });
 });
+
+describe("nsg-fullwidth-alnum — edge cases", () => {
+  it("flags mixed full-width letters and digits as a single span", () => {
+    // Ａ１Ｂ２ (全角英数字混在) は1スパンにまとめる
+    const issues = rule().lint("型番はＡ１Ｂ２です。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("A1B2");
+  });
+
+  it("does not flag full-width symbols (！、（）など)", () => {
+    expect(rule().lint("完了！できました。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag half-width digits", () => {
+    expect(rule().lint("バージョン3を使う。", CONFIG)).toHaveLength(0);
+  });
+
+  it("flags non-contiguous full-width characters as separate issues", () => {
+    // 全角数字が離れている場合、別々のスパンになる
+    const issues = rule().lint("値は１で係数は２です。", CONFIG);
+    expect(issues).toHaveLength(2);
+    expect(issues[0].fix?.replacement).toBe("1");
+    expect(issues[1].fix?.replacement).toBe("2");
+  });
+
+  it("NFKC normalization correctly maps Ａ→A and ａ→a", () => {
+    const issues = rule().lint("コードはＡＢＣａｂｃです。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("ABCabc");
+  });
+});

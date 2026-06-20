@@ -41,3 +41,34 @@ describe("nsg-wave-dash — behavior", () => {
     expect(rule().lint("10~20。", { ...CONFIG, enabled: false })).toHaveLength(0);
   });
 });
+
+describe("nsg-wave-dash — edge cases", () => {
+  it("flags tilde between full-width digits (e.g. １~２ — digit before is still ASCII here)", () => {
+    // テキスト中に半角数字~半角数字の形のみが対象
+    const issues = rule().lint("5~10個使う。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("〜");
+  });
+
+  it("does not flag tilde at start (no preceding digit)", () => {
+    expect(rule().lint("~5分かかる。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag tilde at end (no following digit)", () => {
+    expect(rule().lint("5~ 分かかる。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag wave dash character 〜 (already correct)", () => {
+    expect(rule().lint("5〜10ページ。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag URL with tilde (no adjacent digits)", () => {
+    expect(rule().lint("ホームは ~/docs です。", CONFIG)).toHaveLength(0);
+  });
+
+  it("span is exactly 1 character (only the tilde, not digits)", () => {
+    const issues = rule().lint("10~20。", CONFIG);
+    expect(issues[0].to - issues[0].from).toBe(1);
+    expect(issues[0].originalText).toBe("~");
+  });
+});

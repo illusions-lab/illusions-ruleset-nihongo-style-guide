@@ -40,3 +40,35 @@ describe("nsg-unit-time — behavior", () => {
     expect(rule().lint("120km/時。", { ...CONFIG, enabled: false })).toHaveLength(0);
   });
 });
+
+describe("nsg-unit-time — edge cases", () => {
+  it("does not flag 'm/s' (seconds unit — not covered by this rule)", () => {
+    // m/s はこのルールの対象外（「時」に限定している）
+    expect(rule().lint("速度は5m/sです。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag '時速' written in full Japanese without unit symbol", () => {
+    // 「時速120キロ」はルールの対象外（単位記号がない）
+    expect(rule().lint("時速120キロで走る。", CONFIG)).toHaveLength(0);
+  });
+
+  it("flags 'km毎時' in addition to 'km/時'", () => {
+    const issues = rule().lint("速度は60km毎時だ。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("km/h");
+  });
+
+  it("does not produce double flags when 'km/時' and 'm/時' both appear", () => {
+    // km/時 と m/時 が同時に出た場合、km/時 の m を m/時 と誤検出しないこと
+    const issues = rule().lint("最高100km/時、歩行5m/時。", CONFIG);
+    expect(issues).toHaveLength(2);
+    expect(issues.map((i) => i.fix?.replacement)).toEqual(["km/h", "m/h"]);
+  });
+
+  it("does not flag 'm/時' when the m is part of 'km/時'", () => {
+    // km/時 の m を単独 m と見なさない（負の lookahead で除外）
+    const issues = rule().lint("最高100km/時。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("km/h");
+  });
+});

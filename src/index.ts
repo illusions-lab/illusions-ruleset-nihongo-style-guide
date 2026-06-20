@@ -20,6 +20,7 @@ import { createNsgWaveDash } from "./rules/nsg-wave-dash";
 import { createNsgEllipsisStyle } from "./rules/nsg-ellipsis-style";
 import { createNsgRepetitionMark } from "./rules/nsg-repetition-mark";
 import { createNsgKotoFormalNoun } from "./rules/nsg-koto-formalnoun";
+import { createNsgHojoVerbL2 } from "./rules/nsg-hojo-verb-l2";
 
 const manifest = manifestJson as RulesetModule["manifest"];
 
@@ -38,6 +39,7 @@ const ruleset: RulesetModule = {
       createNsgEllipsisStyle(ctx, manifest),
       createNsgRepetitionMark(ctx, manifest),
       createNsgKotoFormalNoun(ctx, manifest),
+      createNsgHojoVerbL2(ctx, manifest),
     ];
   },
 };

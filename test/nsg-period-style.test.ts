@@ -43,3 +43,31 @@ describe("nsg-period-style — behavior", () => {
     expect(rule().lint("完了．", { ...CONFIG, enabled: false })).toHaveLength(0);
   });
 });
+
+describe("nsg-period-style — edge cases", () => {
+  it("flags 全角ピリオド after long vowel mark (ー)", () => {
+    // 長音符号（ー）は日本語文字としてカウントされる
+    const issues = rule().lint("コンピューター．", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("。");
+  });
+
+  it("flags multiple 全角ピリオドs in one sentence", () => {
+    const issues = rule().lint("保存した．確認した．", CONFIG);
+    expect(issues).toHaveLength(2);
+  });
+
+  it("does not flag 全角ピリオド immediately after ASCII digit (e.g. version number)", () => {
+    // 「3.」の形は英数字扱いなので反応しない
+    expect(rule().lint("バージョン3．1です。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag 半角ピリオド (ASCII period is not 全角ピリオド)", () => {
+    expect(rule().lint("完了.", CONFIG)).toHaveLength(0);
+  });
+
+  it("flags 全角ピリオド after hiragana", () => {
+    const issues = rule().lint("これはよい．", CONFIG);
+    expect(issues).toHaveLength(1);
+  });
+});

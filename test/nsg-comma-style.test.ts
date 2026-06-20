@@ -41,3 +41,31 @@ describe("nsg-comma-style — behavior", () => {
     expect(rule().lint("保存し，終了する。", { ...CONFIG, enabled: false })).toHaveLength(0);
   });
 });
+
+describe("nsg-comma-style — edge cases", () => {
+  it("flags multiple 全角コンマs in one sentence", () => {
+    const issues = rule().lint("赤，青，緑を選ぶ。", CONFIG);
+    expect(issues).toHaveLength(2);
+  });
+
+  it("flags 全角コンマ after katakana", () => {
+    const issues = rule().lint("データ，ファイルを保存する。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("、");
+  });
+
+  it("flags 全角コンマ after kanji", () => {
+    const issues = rule().lint("設定，変更を確認する。", CONFIG);
+    expect(issues).toHaveLength(1);
+  });
+
+  it("does not flag half-width comma after ASCII digit (position: 1,000)", () => {
+    // 半角コンマは対象外（全角コンマのみ対象）
+    expect(rule().lint("1,000円です。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag 全角コンマ after ASCII digit (e.g. 1，000 — numeric thousands)", () => {
+    // 数字直後の全角コンマは英数字扱いで対象外
+    expect(rule().lint("1，000円です。", CONFIG)).toHaveLength(0);
+  });
+});

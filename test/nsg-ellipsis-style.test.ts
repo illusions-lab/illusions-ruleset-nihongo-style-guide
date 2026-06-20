@@ -38,3 +38,38 @@ describe("nsg-ellipsis-style — behavior", () => {
     expect(rule().lint("続きは...次回。", { ...CONFIG, enabled: false })).toHaveLength(0);
   });
 });
+
+describe("nsg-ellipsis-style — edge cases", () => {
+  it("flags exactly 3 periods", () => {
+    const issues = rule().lint("待った...。", CONFIG);
+    expect(issues).toHaveLength(1);
+  });
+
+  it("flags 4 or more consecutive periods", () => {
+    const issues = rule().lint("そして....次へ。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("…");
+  });
+
+  it("does not flag 2 periods (path notation or range)", () => {
+    expect(rule().lint("親フォルダは..です。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag ../ (relative path prefix)", () => {
+    expect(rule().lint("パスは../docsです。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag single period", () => {
+    expect(rule().lint("バージョン1.0です。", CONFIG)).toHaveLength(0);
+  });
+
+  it("does not flag already-correct 三点リーダー", () => {
+    expect(rule().lint("続きは…次回へ。", CONFIG)).toHaveLength(0);
+  });
+
+  it("replacement collapses any run of ≥3 periods to a single …", () => {
+    const issues = rule().lint("続き......次へ。", CONFIG);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].fix?.replacement).toBe("…");
+  });
+});

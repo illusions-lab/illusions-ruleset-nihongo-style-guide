@@ -3,7 +3,7 @@
   "id": "com.illusions-lab.nihongo-style-guide",
   "name": "Nihongo Style Guide 3 (JTCA)",
   "nameJa": "日本語スタイルガイド 第3版",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "engineApi": 1,
   "license": "MIT",
   "licenseUrl": "https://opensource.org/license/mit",
@@ -27,8 +27,15 @@
       "descriptionJa": "TC協会ガイドラインでは語末長音符号を付けることを原則としています。一般用語で語末長音符号（ー）が省略されている箇所を検出します（例: コンピュータ → コンピューター）。技術用語では省略する方針もあるため、提案として表示します。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "新しいコンピューターを買う。",
         "negativeExample": "新しいコンピュータを買う。",
@@ -41,8 +48,15 @@
       "descriptionJa": "ヴァ・ヴィ・ヴ・ヴェ・ヴォの表記を慣用形（バ・ビ・ブ・ベ・ボ）に統一する提案を行います。固有名詞は対象外です。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "バイオリンを弾く。",
         "negativeExample": "ヴァイオリンを弾く。",
@@ -55,8 +69,17 @@
       "descriptionJa": "実用文の句点は丸（。）に統一します。全角ピリオド（．）を句点として使っていないか検出します。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "novel",
+        "official",
+        "blog",
+        "academic",
+        "sns"
+      ],
       "docs": {
         "positiveExample": "これは新製品です。",
         "negativeExample": "これは新製品です．",
@@ -69,8 +92,17 @@
       "descriptionJa": "実用文の読点は点（、）に統一します。全角コンマ（，）を読点として使っていないか検出します。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "novel",
+        "official",
+        "blog",
+        "academic",
+        "sns"
+      ],
       "docs": {
         "positiveExample": "保存し、終了する。",
         "negativeExample": "保存し，終了する。",
@@ -83,8 +115,15 @@
       "descriptionJa": "速度の単位はSIに基づく英字記号に統一します（例: km/時 → km/h）。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "最高120km/hで走る。",
         "negativeExample": "最高120km/時で走る。",
@@ -97,8 +136,15 @@
       "descriptionJa": "SI単位記号の大文字小文字の表記を点検します（例: Kg → kg、hz → Hz）。なお Mg（メガグラム）はSI正式記号のため対象外です。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "重さは5kgです。",
         "negativeExample": "重さは5Kgです。",
@@ -111,8 +157,15 @@
       "descriptionJa": "和文中の英字・数字は半角に統一します。全角の英字・数字を検出します。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "バージョン3を使う。",
         "negativeExample": "バージョン３を使う。",
@@ -125,8 +178,15 @@
       "descriptionJa": "範囲を示す記号は波記号（〜）に統一します。数値範囲の半角チルダ（例: 10~20）を検出します。URL・コマンドパス等の半角チルダは対象外です。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "10〜20ページを読む。",
         "negativeExample": "10~20ページを読む。",
@@ -139,8 +199,17 @@
       "descriptionJa": "省略を示すリーダーは三点リーダー（…）を用います。半角ピリオドの連続を検出します。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "novel",
+        "official",
+        "blog",
+        "academic",
+        "sns"
+      ],
       "docs": {
         "positiveExample": "続きは…次回へ。",
         "negativeExample": "続きは...次回へ。",
@@ -153,8 +222,15 @@
       "descriptionJa": "複合語にまたがる同字反復には繰り返し符号（々）を使いません（例: 研究会々長 → 研究会会長）。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "研究会会長に就任する。",
         "negativeExample": "研究会々長に就任する。",
@@ -167,12 +243,40 @@
       "descriptionJa": "形式名詞として使う「事」はひらがな「こと」と表記します（例: 変更すること）。具体的な事物を指す普通名詞の「事」（例: 事を成しとげる）は対象外です。",
       "guidelineId": "jtca-style-guide-3",
       "level": "L2",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["official", "academic", "blog"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
       "docs": {
         "positiveExample": "変更することもある。",
         "negativeExample": "変更する事もある。",
-        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 J.2.2節"
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.2.2節"
+      }
+    },
+    {
+      "ruleId": "nsg-hojo-verb-l2",
+      "nameJa": "補助動詞の仮名書き",
+      "descriptionJa": "補助動詞として使う動詞はひらがなで表記します（例: 歩いてみる、確保しておく）。本動詞として使う場合（例: 絵を見る、机に置く）は対象外です。接続助詞「て/で」の直後に来る漢字表記の補助動詞を検出します。",
+      "guidelineId": "jtca-style-guide-3",
+      "level": "L2",
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "official",
+        "academic",
+        "blog"
+      ],
+      "docs": {
+        "positiveExample": "歩いてみると、周辺の変化がよくわかった。",
+        "negativeExample": "歩いて見ると、周辺の変化がよくわかった。",
+        "sourceReference": "日本語スタイルガイド 第3版（テクニカルコミュニケーター協会）第1章 1.2.2節「品詞や意味による漢字とひらがなの使い分け」"
       }
     }
   ]
