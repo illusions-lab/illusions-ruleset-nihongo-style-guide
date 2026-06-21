@@ -6,6 +6,13 @@
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-06-21
+
+### Changed
+
+- マーケットプレイス用 OG 画像（`OG.png`）を作成。
+- `LICENSE` の著作権者を記入し、テンプレート残置（CHANGELOG 初版・docs サンプル参照・README 脚注・重複 .github）を整理。
+
 ## [0.4.0] - 2026-06-20
 
 ### Changed
