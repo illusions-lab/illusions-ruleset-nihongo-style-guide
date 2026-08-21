@@ -22,7 +22,9 @@ function lintWithMockTokens(
 }
 
 const getRule = () =>
-  ruleset.createRules(createTestContext()).find((r) => r.id === "nsg-hojo-verb-l2")!;
+  ruleset
+    .createRules(createTestContext())
+    .find((r) => r.id === "nsg-hojo-verb-l2")!;
 
 // ---------------------------------------------------------------------------
 // Token helpers
@@ -59,7 +61,11 @@ function makeDeToken(start: number): Token {
 }
 
 /** 自立動詞トークン（本動詞用 — 格助詞などの後に来る想定） */
-function makeMainVerbToken(surface: string, basicForm: string, start: number): Token {
+function makeMainVerbToken(
+  surface: string,
+  basicForm: string,
+  start: number,
+): Token {
   return {
     surface,
     pos: "動詞",
@@ -93,7 +99,13 @@ describe("nsg-hojo-verb-l2 — 検出 (補助動詞の漢字表記を検出す�
         start: 3,
         end: 5,
       },
-      { surface: "と", pos: "助詞", pos_detail_1: "接続助詞", start: 5, end: 6 },
+      {
+        surface: "と",
+        pos: "助詞",
+        pos_detail_1: "接続助詞",
+        start: 5,
+        end: 6,
+      },
       { surface: "。", pos: "記号", pos_detail_1: "句点", start: 6, end: 7 },
     ];
 
@@ -110,8 +122,21 @@ describe("nsg-hojo-verb-l2 — 検出 (補助動詞の漢字表記を検出す�
     // 「確保して置く」
     const text = "確保して置く。";
     const tokens: Token[] = [
-      { surface: "確保", pos: "名詞", pos_detail_1: "サ変接続", start: 0, end: 2 },
-      { surface: "し", pos: "動詞", pos_detail_1: "自立", basic_form: "する", start: 2, end: 3 },
+      {
+        surface: "確保",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        start: 0,
+        end: 2,
+      },
+      {
+        surface: "し",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "する",
+        start: 2,
+        end: 3,
+      },
       makeTeToken(3),
       {
         surface: "置く",
@@ -137,8 +162,21 @@ describe("nsg-hojo-verb-l2 — 検出 (補助動詞の漢字表記を検出す�
     // 「進んで行く」
     const text = "変化して行く。";
     const tokens: Token[] = [
-      { surface: "変化", pos: "名詞", pos_detail_1: "サ変接続", start: 0, end: 2 },
-      { surface: "し", pos: "動詞", pos_detail_1: "自立", basic_form: "する", start: 2, end: 3 },
+      {
+        surface: "変化",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        start: 0,
+        end: 2,
+      },
+      {
+        surface: "し",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "する",
+        start: 2,
+        end: 3,
+      },
       makeTeToken(3),
       {
         surface: "行く",
@@ -162,7 +200,14 @@ describe("nsg-hojo-verb-l2 — 検出 (補助動詞の漢字表記を検出す�
     // 「なって来る」
     const text = "寒くなって来る。";
     const tokens: Token[] = [
-      { surface: "寒く", pos: "形容詞", pos_detail_1: "自立", basic_form: "寒い", start: 0, end: 2 },
+      {
+        surface: "寒く",
+        pos: "形容詞",
+        pos_detail_1: "自立",
+        basic_form: "寒い",
+        start: 0,
+        end: 2,
+      },
       makeMainVerbToken("なっ", "成る", 2),
       makeTeToken(3),
       {
@@ -234,8 +279,21 @@ describe("nsg-hojo-verb-l2 — 検出 (補助動詞の漢字表記を検出す�
   it("〜ていただく（頂く）を検出する", () => {
     const text = "報告して頂く。";
     const tokens: Token[] = [
-      { surface: "報告", pos: "名詞", pos_detail_1: "サ変接続", start: 0, end: 2 },
-      { surface: "し", pos: "動詞", pos_detail_1: "自立", basic_form: "する", start: 2, end: 3 },
+      {
+        surface: "報告",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        start: 0,
+        end: 2,
+      },
+      {
+        surface: "し",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "する",
+        start: 2,
+        end: 3,
+      },
       makeTeToken(3),
       {
         surface: "頂く",
@@ -341,7 +399,13 @@ describe("nsg-hojo-verb-l2 — 非検出 (本動詞・仮名書き済みは対�
         start: 3,
         end: 5,
       },
-      { surface: "と", pos: "助詞", pos_detail_1: "接続助詞", start: 5, end: 6 },
+      {
+        surface: "と",
+        pos: "助詞",
+        pos_detail_1: "接続助詞",
+        start: 5,
+        end: 6,
+      },
       { surface: "。", pos: "記号", pos_detail_1: "句点", start: 6, end: 7 },
     ];
 
@@ -353,8 +417,21 @@ describe("nsg-hojo-verb-l2 — 非検出 (本動詞・仮名書き済みは対�
   it("既に仮名書きの活用形「おいて」はスキップ（全ひらがなガード）", () => {
     const text = "確認しておいた。";
     const tokens: Token[] = [
-      { surface: "確認", pos: "名詞", pos_detail_1: "サ変接続", start: 0, end: 2 },
-      { surface: "し", pos: "動詞", pos_detail_1: "自立", basic_form: "する", start: 2, end: 3 },
+      {
+        surface: "確認",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        start: 0,
+        end: 2,
+      },
+      {
+        surface: "し",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "する",
+        start: 2,
+        end: 3,
+      },
       makeTeToken(3),
       {
         surface: "おい",
@@ -414,8 +491,21 @@ describe("nsg-hojo-verb-l2 — エッジケース", () => {
       },
       makeTeToken(4),
       { surface: "、", pos: "記号", pos_detail_1: "読点", start: 5, end: 6 },
-      { surface: "保存", pos: "名詞", pos_detail_1: "サ変接続", start: 6, end: 8 },
-      { surface: "し", pos: "動詞", pos_detail_1: "自立", basic_form: "する", start: 8, end: 9 },
+      {
+        surface: "保存",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        start: 6,
+        end: 8,
+      },
+      {
+        surface: "し",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "する",
+        start: 8,
+        end: 9,
+      },
       makeTeToken(9),
       {
         surface: "置く",
@@ -433,7 +523,7 @@ describe("nsg-hojo-verb-l2 — エッジケース", () => {
     const issues = lintWithMockTokens(rule, text, tokens, CONFIG);
     expect(issues).toHaveLength(2);
     expect(issues[0].from).toBeLessThan(issues[1].from);
-    expect(issues[0].fix?.replacement).toBe("みる");
+    expect(issues[0].fix?.replacement).toBe("みて");
     expect(issues[1].fix?.replacement).toBe("おく");
   });
 
@@ -460,16 +550,67 @@ describe("nsg-hojo-verb-l2 — エッジケース", () => {
     const rule = getRule();
     const issues = lintWithMockTokens(rule, text, tokens, CONFIG);
     expect(issues).toHaveLength(1);
-    expect(issues[0].fix?.replacement).toBe("くる");
+    expect(issues[0].fix?.replacement).toBe("きた");
     expect(issues[0].from).toBe(5);
     expect(issues[0].to).toBe(7);
   });
 
+  it.each([
+    ["来", "キ", "て", "テ", "助詞", "接続助詞", "きて"],
+    ["来", "コ", "ない", "ナイ", "助動詞", "*", "こない"],
+    ["来", "キ", "ます", "マス", "助動詞", "*", "きます"],
+  ])(
+    "keeps the inflection reading for %s%s",
+    (surface, reading, suffix, suffixReading, pos, detail, expected) => {
+      const tokens: Token[] = [
+        makeTeToken(0),
+        {
+          surface,
+          reading,
+          pos: "動詞",
+          pos_detail_1: "自立",
+          basic_form: "来る",
+          start: 1,
+          end: 2,
+        },
+        {
+          surface: suffix,
+          reading: suffixReading,
+          pos,
+          pos_detail_1: detail,
+          start: 2,
+          end: 2 + suffix.length,
+        },
+      ];
+      const issues = lintWithMockTokens(
+        getRule(),
+        tokens.map((token) => token.surface).join(""),
+        tokens,
+        CONFIG,
+      );
+      expect(issues[0].originalText).toBe(surface + suffix);
+      expect(issues[0].fix?.replacement).toBe(expected);
+    },
+  );
+
   it("fix replacement は動詞部分のみ（句点を含まない）", () => {
     const text = "確保して置く。";
     const tokens: Token[] = [
-      { surface: "確保", pos: "名詞", pos_detail_1: "サ変接続", start: 0, end: 2 },
-      { surface: "し", pos: "動詞", pos_detail_1: "自立", basic_form: "する", start: 2, end: 3 },
+      {
+        surface: "確保",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        start: 0,
+        end: 2,
+      },
+      {
+        surface: "し",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "する",
+        start: 2,
+        end: 3,
+      },
       makeTeToken(3),
       {
         surface: "置く",
@@ -510,7 +651,10 @@ describe("nsg-hojo-verb-l2 — エッジケース", () => {
       },
     ];
     const rule = getRule();
-    const issues = lintWithMockTokens(rule, text, tokens, { ...CONFIG, enabled: false });
+    const issues = lintWithMockTokens(rule, text, tokens, {
+      ...CONFIG,
+      enabled: false,
+    });
     expect(issues).toHaveLength(0);
   });
 
@@ -524,8 +668,21 @@ describe("nsg-hojo-verb-l2 — エッジケース", () => {
     // 名詞「事」（非自立）が混在していても動詞でない限り本ルールはスキップ
     const text = "確認する事もある。";
     const tokens: Token[] = [
-      { surface: "確認", pos: "名詞", pos_detail_1: "サ変接続", start: 0, end: 2 },
-      { surface: "する", pos: "動詞", pos_detail_1: "自立", basic_form: "する", start: 2, end: 4 },
+      {
+        surface: "確認",
+        pos: "名詞",
+        pos_detail_1: "サ変接続",
+        start: 0,
+        end: 2,
+      },
+      {
+        surface: "する",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "する",
+        start: 2,
+        end: 4,
+      },
       {
         surface: "事",
         pos: "名詞",
@@ -536,7 +693,14 @@ describe("nsg-hojo-verb-l2 — エッジケース", () => {
         end: 5,
       },
       { surface: "も", pos: "助詞", pos_detail_1: "係助詞", start: 5, end: 6 },
-      { surface: "ある", pos: "動詞", pos_detail_1: "自立", basic_form: "ある", start: 6, end: 8 },
+      {
+        surface: "ある",
+        pos: "動詞",
+        pos_detail_1: "自立",
+        basic_form: "ある",
+        start: 6,
+        end: 8,
+      },
       { surface: "。", pos: "記号", pos_detail_1: "句点", start: 8, end: 9 },
     ];
     const rule = getRule();
