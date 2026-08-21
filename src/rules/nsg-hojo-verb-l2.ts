@@ -85,6 +85,42 @@ function isTeConjunction(t: Token): boolean {
   );
 }
 
+const toHiragana = (value: string): string =>
+  value.replace(/[ァ-ヶ]/g, (char) =>
+    String.fromCharCode(char.charCodeAt(0) - 0x60),
+  );
+function inflectedKana(
+  tokens: ReadonlyArray<Token>,
+  index: number,
+  fallback: string,
+) {
+  const first = tokens[index];
+  let endIndex = index;
+  let replacement = first.reading ? toHiragana(first.reading) : fallback;
+  const needsSurfaceSuffix = replacement !== fallback;
+  while (endIndex + 1 < tokens.length) {
+    const next = tokens[endIndex + 1];
+    if (!(
+      (next.pos === "助動詞" ||
+        (needsSurfaceSuffix &&
+          next.pos === "助詞" &&
+          next.pos_detail_1 === "接続助詞")) &&
+      next.start === tokens[endIndex].end
+    ))
+      break;
+    replacement += next.reading ? toHiragana(next.reading) : next.surface;
+    endIndex++;
+  }
+  return {
+    replacement,
+    end: tokens[endIndex].end,
+    surface: tokens
+      .slice(index, endIndex + 1)
+      .map((token) => token.surface)
+      .join(""),
+  };
+}
+
 export function createNsgHojoVerbL2(
   ctx: RulesetContext,
   manifest: RulesetManifest,
@@ -135,27 +171,28 @@ export function createNsgHojoVerbL2(
 
         // 基本形（辞書形）で補助動詞辞書を引く
         const basicForm = cur.basic_form ?? cur.surface;
-        const kanaForm = AUX_VERB_MAP.get(basicForm);
-        if (!kanaForm) continue;
+        const fallback = AUX_VERB_MAP.get(basicForm);
+        if (!fallback) continue;
 
         // surface が既に仮名（推奨形）ならスキップ
-        if (cur.surface === kanaForm) continue;
         // 既に仮名書きの活用形（例: みた、おいた）もスキップ
         if (/^[ぁ-ん]+$/.test(cur.surface)) continue;
+        const inflection = inflectedKana(tokens, i, fallback);
+        if (!inflection) continue;
 
         issues.push({
           ruleId: this.id,
           severity: config.severity,
-          message: `Auxiliary verb "${cur.surface}" (…て${cur.surface}) should be written in kana: "${kanaForm}"`,
-          messageJa: `日本語スタイルガイド 第3版に基づき、補助動詞として使う「…て${cur.surface}」の「${cur.surface}」はひらがな「${kanaForm}」と表記します（例: 歩いてみる、確保しておく）。`,
+          message: `Auxiliary verb "${inflection.surface}" should be written in kana: "${inflection.replacement}"`,
+          messageJa: `日本語スタイルガイド 第3版に基づき、補助動詞「${inflection.surface}」はひらがな「${inflection.replacement}」と表記します。`,
           from: cur.start,
-          to: cur.end,
-          originalText: cur.surface,
+          to: inflection.end,
+          originalText: inflection.surface,
           reference: REFERENCE,
           fix: {
-            label: `Replace "${cur.surface}" with "${kanaForm}"`,
-            labelJa: `「${kanaForm}」に変更`,
-            replacement: kanaForm,
+            label: `Replace "${inflection.surface}" with "${inflection.replacement}"`,
+            labelJa: `「${inflection.replacement}」に変更`,
+            replacement: inflection.replacement,
           },
         });
       }
